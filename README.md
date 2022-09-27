@@ -1,8 +1,8 @@
 # MixStorage
 
-Storage object for iOS simply.
+Storage data for iOS simply.
 
-Storage type can be File, NSUserDefaults and Keychain
+Storage type can be File, NSUserDefaults and Keychain.
 
 ## Installation
 
@@ -41,7 +41,7 @@ Add a PropertyWrapper to current property to make it storable.
         var username: String?
 
         // Storage codable struct.
-        // If Keychain storaged the user, return it, else return default user.
+        // Return the user that storaged in Keychain with key, otherwise set default user to Keychain and return it.
         @MixStorable(wrappedValue: .default, key: .init("user_storage"), mode: .keychain)
         var user: User
     }
@@ -49,8 +49,12 @@ Add a PropertyWrapper to current property to make it storable.
 
 Only two powerful api you will use.
 
+    extension MixStorage.Key {
+        static var akey: Self { .init("akey") }
+    }
+
     // set
-    MixStorage.set(.init("test_key1"), value: "testValue", mode: .file)
+    MixStorage.set(.akey, value: "testValue", mode: .file)
 
     // get
-    let value = MixStorage.get(.init("test_key1"), valueType: String.self, mode: .file)
+    let value = MixStorage.get(.akey, valueType: String.self, mode: .file)
