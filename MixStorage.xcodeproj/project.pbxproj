@@ -21,6 +21,9 @@
 		079BB0BD28E2E4D600B31D89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		079BB0C028E2E4D600B31D89 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		079BB0C828E2E53F00B31D89 /* MixStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixStorage.swift; sourceTree = "<group>"; };
+		079BB0CA28E2EF5800B31D89 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		079BB0CB28E2EFDB00B31D89 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		079BB0CC28E2EFF200B31D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +40,9 @@
 		079BB0AD28E2E4D100B31D89 = {
 			isa = PBXGroup;
 			children = (
+				079BB0CC28E2EFF200B31D89 /* README.md */,
+				079BB0CB28E2EFDB00B31D89 /* LICENSE */,
+				079BB0CA28E2EF5800B31D89 /* Package.swift */,
 				079BB0C728E2E53000B31D89 /* Sources */,
 				079BB0B828E2E4D100B31D89 /* MixStorage */,
 				079BB0B728E2E4D100B31D89 /* Products */,
