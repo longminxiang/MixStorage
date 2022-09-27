@@ -204,7 +204,10 @@ public class MixStorage {
         self.key = key
         self.mode = mode
         if let value = MixStorage.get(key, valueType: Value.self, mode: mode) {
-            ref.value = value
+            self.ref.value = value
+        }
+        else {
+            self.wrappedValue = wrappedValue
         }
     }
 }
