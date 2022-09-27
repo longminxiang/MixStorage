@@ -11,6 +11,8 @@ struct User: Codable {
     var id: Int
     var name: String
 
+    static var `default`: Self { User(id: 0, name: "user0") }
+
     static func random() -> Self {
         let id = Int.random(in: 1..<100)
         return User(id: id, name: "user_\(id)")
@@ -19,8 +21,8 @@ struct User: Codable {
 
 struct ContentView: View {
 
-    @Storable(wrappedValue: nil, key: .init("user_storage"), mode: .keychain)
-    var user: User?
+    @MixStorable(wrappedValue: .default, key: .init("user_storage"), mode: .keychain)
+    var user: User
 
     @State var auser: User?
 
