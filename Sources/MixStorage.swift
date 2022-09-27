@@ -7,13 +7,13 @@
 
 import Foundation
 
-class MixStorage {
+public class MixStorage {
 
-    enum Mode {
+    public enum Mode {
         case file, userDefaults, keychain
     }
 
-    struct Key {
+    public struct Key {
         var rawValue: String
 
         init(_ rawValue: String) {
@@ -38,7 +38,7 @@ class MixStorage {
 
     private let keychainLock = NSLock()
 
-    static func set<T: Encodable>(_ key: Key, value: T, mode: MixStorage.Mode = .file) {
+    public static func set<T: Encodable>(_ key: Key, value: T, mode: MixStorage.Mode = .file) {
         let data = (try? JSONEncoder().encode(value)) ?? Data()
         let rawKey = key.rawValue
         switch mode {
@@ -72,7 +72,7 @@ class MixStorage {
         }
     }
 
-    static func get<T: Decodable>(_ key: Key, valueType: T.Type, mode: MixStorage.Mode = .file) -> T? {
+    public static func get<T: Decodable>(_ key: Key, valueType: T.Type, mode: MixStorage.Mode = .file) -> T? {
         let rawKey = key.rawValue
         var data: Data?
         switch mode {
@@ -108,7 +108,7 @@ class MixStorage {
 }
 
 
-@propertyWrapper struct MixStorable<Value: Codable> {
+@propertyWrapper public struct MixStorable<Value: Codable> {
 
     private class ValueRef<Value: Codable> {
         var value: Value
@@ -119,11 +119,11 @@ class MixStorage {
     }
 
     private var ref: ValueRef<Value>
-    let key: MixStorage.Key
-    let mode: MixStorage.Mode
-    var projectedValue: Self { self }
+    public let key: MixStorage.Key
+    public let mode: MixStorage.Mode
+    public var projectedValue: Self { self }
 
-    var wrappedValue: Value {
+    public var wrappedValue: Value {
         get { ref.value }
         nonmutating set {
             ref.value = newValue
