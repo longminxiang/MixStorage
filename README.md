@@ -1,6 +1,7 @@
 # MixStorage
 
 Storage object for iOS simply.
+
 Storage type can be File, NSUserDefaults and Keychain
 
 ## Usage
