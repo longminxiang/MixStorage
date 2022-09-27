@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Storage {
+class MixStorage {
 
     enum Mode {
         case file, userDefaults, keychain
@@ -21,7 +21,7 @@ class Storage {
         }
     }
 
-    private static let shared = Storage()
+    private static let shared = MixStorage()
 
     private var _fileDirectory: URL?
     private var fileDirectory: URL {
@@ -38,7 +38,7 @@ class Storage {
 
     private let keychainLock = NSLock()
 
-    static func set<T: Encodable>(_ key: Key, value: T, mode: Storage.Mode = .file) {
+    static func set<T: Encodable>(_ key: Key, value: T, mode: MixStorage.Mode = .file) {
         let data = (try? JSONEncoder().encode(value)) ?? Data()
         let rawKey = key.rawValue
         switch mode {
@@ -72,7 +72,7 @@ class Storage {
         }
     }
 
-    static func get<T: Decodable>(_ key: Key, valueType: T.Type, mode: Storage.Mode = .file) -> T? {
+    static func get<T: Decodable>(_ key: Key, valueType: T.Type, mode: MixStorage.Mode = .file) -> T? {
         let rawKey = key.rawValue
         var data: Data?
         switch mode {
@@ -108,7 +108,7 @@ class Storage {
 }
 
 
-@propertyWrapper struct Storable<Value: Codable> {
+@propertyWrapper struct MixStorable<Value: Codable> {
 
     private class ValueRef<Value: Codable> {
         var value: Value
@@ -119,23 +119,23 @@ class Storage {
     }
 
     private var ref: ValueRef<Value>
-    let key: Storage.Key
-    let mode: Storage.Mode
+    let key: MixStorage.Key
+    let mode: MixStorage.Mode
     var projectedValue: Self { self }
 
     var wrappedValue: Value {
         get { ref.value }
         nonmutating set {
             ref.value = newValue
-            Storage.set(key, value: ref.value, mode: mode)
+            MixStorage.set(key, value: ref.value, mode: mode)
         }
     }
 
-    init(wrappedValue: Value, key: Storage.Key, mode: Storage.Mode = .file) {
+    init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file) {
         self.ref = ValueRef(wrappedValue)
         self.key = key
         self.mode = mode
-        if let value = Storage.get(key, valueType: Value.self, mode: mode) {
+        if let value = MixStorage.get(key, valueType: Value.self, mode: mode) {
             ref.value = value
         }
     }
