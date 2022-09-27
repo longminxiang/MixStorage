@@ -109,11 +109,13 @@ public class MixStorage {
             ]
             SecItemAdd(query as CFDictionary, nil)
         case .file:
-            do {
-                try data.write(to: shared.fileDirectory.appendingPathComponent(rawKey))
-            }
-            catch {
-                debugPrint(error)
+            DispatchQueue.global().async {
+                do {
+                    try data.write(to: shared.fileDirectory.appendingPathComponent(rawKey))
+                }
+                catch {
+                    debugPrint(error)
+                }
             }
             shared.fileCache[rawKey] = data
         }
