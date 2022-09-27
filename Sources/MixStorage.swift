@@ -7,61 +7,47 @@
 
 import Foundation
 
-/// Storage Mode
-public enum MixStorageMode {
-    /// file mode
-    case file
-
-    /// NSUserDefaults mode
-    case userDefaults
-
-    /// Keychain mode
-    case keychain
-}
-
-/// Storage Key
-///
-/// Init
-/// ```swift
-/// let key = MixStorageKey("akey")
-/// ```
-///
-/// Extension
-/// ```swift
-/// extension MixStorageKey {
-///     static var akey: Self { .init("akey") }
-/// }
-///
-/// MixStorage.set(.akey, value: "keyvalue")
-/// ```
-public struct MixStorageKey {
-    public var rawValue: String
-
-    public init(_ rawValue: String) {
-        self.rawValue = rawValue
-    }
-}
-
 /// Storage
 ///
 /// Set storage
 /// ```swift
-/// // Default mode is .file
-/// MixStorage.set(.init("akey"), value: "keyvalue")
-///
-/// // Use another mode
 /// MixStorage.set(.init("akey"), value: "keyvalue", mode: .keychain)
 /// ```
 ///
 /// Get storage
 /// ```swift
-/// // Default mode is .file
-/// let str = MixStorage.get(.init("akey"), valueType: String.self)
-///
-/// // Use another mode
 /// let str = MixStorage.get(.init("akey"), valueType: String.self, mode: .keychain)
 /// ```
 public class MixStorage {
+
+    /// Storage Mode
+    public enum Mode {
+        /// File mode
+        case file
+        /// NSUserDefaults mode
+        case userDefaults
+
+        /// Keychain mode
+        case keychain
+    }
+
+    /// Storage Key
+    ///
+    /// Extension
+    /// ```swift
+    /// extension MixStorage.Key {
+    ///     static var akey: Self { .init("akey") }
+    /// }
+    ///
+    /// MixStorage.set(.akey, value: "keyvalue")
+    /// ```
+    public struct Key {
+        public var rawValue: String
+
+        public init(_ rawValue: String) {
+            self.rawValue = rawValue
+        }
+    }
 
     private static let shared = MixStorage()
 
@@ -85,7 +71,7 @@ public class MixStorage {
     /// - Parameter key: The Storage Key.
     /// - Parameter value: A ``Encodable`` Value.
     /// - Parameter mode: The Storage Mode.
-    public static func set<T: Encodable>(_ key: MixStorageKey, value: T, mode: MixStorageMode = .file) {
+    public static func set<T: Encodable>(_ key: Key, value: T, mode: Mode = .file) {
         let data = (try? JSONEncoder().encode(value)) ?? Data()
         let rawKey = key.rawValue
         switch mode {
@@ -125,7 +111,7 @@ public class MixStorage {
     /// - Parameter valueType: The Value Type.
     /// - Parameter mode: The Storage Mode.
     /// - Returns: A ``Decodable`` Value.
-    public static func get<T: Decodable>(_ key: MixStorageKey, valueType: T.Type, mode: MixStorageMode = .file) -> T? {
+    public static func get<T: Decodable>(_ key: Key, valueType: T.Type, mode: Mode = .file) -> T? {
         let rawKey = key.rawValue
         var data: Data?
         switch mode {
@@ -184,13 +170,14 @@ public class MixStorage {
     }
 
     private var ref: ValueRef<Value>
-    /// key
-    public let key: MixStorageKey
-    /// mode
-    public let mode: MixStorageMode
+    /// Key
+    public let key: MixStorage.Key
+    /// Mode
+    public let mode: MixStorage.Mode
     /// A binding to the self, use with (`$`)
     public var projectedValue: Self { self }
 
+    /// Wrapped value
     public var wrappedValue: Value {
         get { ref.value }
         nonmutating set {
@@ -199,7 +186,8 @@ public class MixStorage {
         }
     }
 
-    public init(wrappedValue: Value, key: MixStorageKey, mode: MixStorageMode = .file) {
+    /// Init
+    public init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file) {
         self.ref = ValueRef(wrappedValue)
         self.key = key
         self.mode = mode
