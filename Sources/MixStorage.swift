@@ -14,9 +14,9 @@ public class MixStorage {
     }
 
     public struct Key {
-        var rawValue: String
+        public var rawValue: String
 
-        init(_ rawValue: String) {
+        public init(_ rawValue: String) {
             self.rawValue = rawValue
         }
     }
@@ -131,7 +131,7 @@ public class MixStorage {
         }
     }
 
-    init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file) {
+    public init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file) {
         self.ref = ValueRef(wrappedValue)
         self.key = key
         self.mode = mode
