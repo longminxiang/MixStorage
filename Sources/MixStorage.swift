@@ -168,8 +168,11 @@ public class MixStorage {
             self.value = value
         }
     }
+    
+    public typealias ValueDidSet = (_ value: Value) -> Void
 
     private var ref: ValueRef<Value>
+    private var valueDidSet: ValueDidSet?
     /// Key
     public let key: MixStorage.Key
     /// Mode
@@ -183,14 +186,16 @@ public class MixStorage {
         nonmutating set {
             ref.value = newValue
             MixStorage.set(key, value: ref.value, mode: mode)
+            valueDidSet?(newValue)
         }
     }
 
     /// Init
-    public init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file) {
+    public init(wrappedValue: Value, key: MixStorage.Key, mode: MixStorage.Mode = .file, didSet: ValueDidSet? = nil) {
         self.ref = ValueRef(wrappedValue)
         self.key = key
         self.mode = mode
+        self.valueDidSet = didSet
         if let value = MixStorage.get(key, valueType: Value.self, mode: mode) {
             self.ref.value = value
         }
